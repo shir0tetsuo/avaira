@@ -13,4 +13,7 @@ npm init
 npm install --save discord.js
 npm install --save canvas
 #npm install --save pg
-npm install --save sqlite
+#npm install --save sqlite
+npm install --save sqlite3
+npm install --save chalk
+npm install --save sequelize
