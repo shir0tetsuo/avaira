@@ -1,0 +1,25 @@
+{
+  "name": "avaira",
+  "version": "1.0.0",
+  "description": "for concord",
+  "main": "avaira.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shir0tetsuo/avaira.git"
+  },
+  "author": "shadowsword#0179",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shir0tetsuo/avaira/issues"
+  },
+  "homepage": "https://github.com/shir0tetsuo/avaira#readme",
+  "dependencies": {
+    "canvas": "^2.6.1",
+    "discord.js": "^12.5.1",
+    "pg": "^8.5.1",
+    "sqlite": "^4.0.18"
+  }
+}
