@@ -39,7 +39,7 @@ const Users = sequelize.define('users', {
   },
   silver: {
     type: Sequelize.INTEGER,
-    defaultValue: 0,
+    defaultValue: 10,
     allowNull: false,
   },
   gold: {

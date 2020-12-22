@@ -44,7 +44,7 @@ module.exports = message => {
         user_id: message.author.id,
         permission: authPerm,
         level: 1,
-        silver: 0,
+        silver: 10,
         gold: 0,
       }).catch(err=>{
         // If Unique Exists
