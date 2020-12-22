@@ -79,7 +79,10 @@ module.exports = message => {
         // random reaction
 
         // execution
-        console.log(authPerm, perms, t.permission)
+        //console.log(authPerm, perms, t.permission)
+        message.author.level = t.level;
+        message.author.silver = t.silver;
+        message.author.gold = t.gold;
         cmd.run(client, message, params, perms);
         //console.log('USER:',t.user_id,'PERM',t.permission,'LVL',t.level,'SLVR',t.silver,'GOLD',t.gold)
       })

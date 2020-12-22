@@ -12,10 +12,12 @@ exports.run = (client, message, params, perms) => {
     const goodCommands = client.commands.filter(cmd => cmd.conf.permLevel <= level && cmd.conf.enabled !== false)
     const commandNames = goodCommands.keyArray()
     const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
-    let header = `= Avaira Commands (PERM ${perms} @ ${(new Date()) - message.ActionTime.getTime()}ms) =\n\n[Page ${page}, ${settings.prefix}help <commandname> for details]\n\n`;
+    let header = `= Avaira Commands (AUTH ${perms} @ ${(new Date()) - message.ActionTime.getTime()}ms) =\n\n[Page ${page}, ${settings.prefix}help <commandname> for details]\n`;
+    header+=`* Level ${message.author.level}, Silver ${message.author.silver}, Gold ${message.author.gold}\n\n`
     let output = ``
     goodCommands.forEach( c => {
-      output += `${settings.prefix}${c.help.name}${' '.repeat(longest - c.help.name.length)} :: ${c.help.description} :: NONDM ${c.conf.guildOnly} PERM ${c.conf.permLevel}\n`
+      // TODO: check chars incrementally and when over the limit cut down a sentence
+      output += `${settings.prefix}${c.help.name}${' '.repeat(longest - c.help.name.length)} :: ${c.help.description}\n* GUILD ${c.conf.guildOnly} AUTH ${c.conf.permLevel}\n`
     })
     let hLen = 0 + ((page*1 - 1) * 1800)
     let hMax = hLen + 1800

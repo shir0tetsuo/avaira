@@ -17,6 +17,9 @@ const sequelize = new Sequelize('database', 'username', 'password', {
   storage: 'avaira.db',
 });
 
+//CREATE, READ, UPDATE, DELETE
+//Init -> Blueprint -> (READY) -> Read -> Update
+
 // Database Blueprint
 /////////////////////////////////////////////
 const Users = sequelize.define('users', {
@@ -46,6 +49,27 @@ const Users = sequelize.define('users', {
   },
 });
 
+const M = sequelize.define('mapdata', {
+  coordinate: {
+    type: Sequelize.STRING,
+    unique: true,
+  },
+  owner_id: {
+    type: Sequelize.STRING,
+  },
+  silver: {
+    type: Sequelize.INTEGER,
+    defaultValue: 1,
+    allowNull: false,
+  },
+  gold: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+    allowNull: false,
+  },
+})
+
+client.map = M;
 client.dbusers = Users;
 //client.db.plots = Plots;
 
