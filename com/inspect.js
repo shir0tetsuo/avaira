@@ -1,8 +1,9 @@
 const settings = require('../settings.json')
 
+// Avaira printing error response
 function areact(message) {
   message.react('🖤')
-  message.reply('\`inspect [lat(0-180)/lon(0-360)]\` like \`inspect 124068\`')
+  message.reply('\`inspect [(0-179)(0-360)]\` like \`inspect 124068\`')
 }
 
 // 0 padding
@@ -11,24 +12,53 @@ function zeroPad(num, places) {
   return Array(+(zero > 0 && zero)).join("0") + num;
 }
 
+// Read Map Bit
 function rMapBit(client, message, workload) {
+  // Initialization Controller
   if (!message.R) message.R = '';
-  // message.R = carry
+  if (!message.shiftdelimiter) message.shiftdelimiter = '';
+
+  // workload = address array
+  // client.map = database
+  // message.R = msg response carry
+  // message.ADDRESS = inspecting
+  // message.shiftdelimiter = latitude address
+
   // BLACK = empty
   // GREEN = owned
-  // ORANGE = g/s > current, other owner
+  // ORANGE = g > current, other owner
+  // PURPLE = s > current, other owner
   // BLUE = g/s < current, other owner
-  if (workload.length > 1) {
-    bitload = workload[0]
-    workload.remove(bitload)
-    // Print bitload
-    const tag = client.map.findOne({ where: { coordinate: addr } }).then(res => {
-      // loop rMapBit?
+
+  // Workload Loop
+  if (workload.length > 0) {
+    bitload = workload.shift()
+
+    // if bit not equal to slice, break up components
+    if (message.shiftdelimiter != bitload.slice(0,3)) {
+      message.R += '\n'
+      message.shiftdelimiter = bitload.slice(0,3)
+    }
+
+    console.log('BIT LOAD',bitload)
+
+    // Generate Component, append to R
+    const tag = client.map.findOne({ where: { coordinate: bitload } }).then(res => {
+      var bonhomme = '';
+      if (res.coordinate == message.ADDRESS) {
+        bonhomme = ':new_moon:';
+      }
+      if (!bonhomme) {
+        bonhomme = ':black_circle:'
+      }
+      message.R += `${bonhomme}\`${res.coordinate}\`,`
       rMapBit(client, message, workload)
-      console.log(res.coordinate)
-    })  
+      console.log('BIT OK',res.coordinate)
+    })
+
   } else {
-    // Terminate and Print Result
+    message.reply(message.R)
+    // Terminate and Print R, print bit data from bitdata
   }
 
 }
@@ -66,12 +96,14 @@ function gMap(client, message, params, perms){
     let xxx = params[0].slice(0,3)
     let yyy = params[0].slice(3,6)
 
-    if (xxx > 0 && xxx <= 180 && yyy > 0 && yyy <= 360) {
+    if (xxx >= 0 && xxx < 180 && yyy >= 0 && yyy < 360) {
+
+      message.ADDRESS = params[0]
 
       var xmin = parseInt(xxx) - 2,
-      xmax = parseInt(xxx) + 2,
+      xmax = parseInt(xxx) + 3,
       ymin = parseInt(yyy) - 2,
-      ymax = parseInt(yyy) + 2;
+      ymax = parseInt(yyy) + 3;
 
       if (xmin < 0) xmin = 0;
       if (xmax > 180) xmax = 180;
@@ -139,6 +171,6 @@ exports.conf = {
 
 exports.help = {
   name: 'inspect',
-  description: 'Inspect location.',
-  usage: 'inspect [lat(0-180)/lon(0-360)] (eg. inspect 127336)'
+  description: 'Inspect location coordinates.',
+  usage: 'inspect [(0-179)/(0-359)] (eg. inspect 127336)'
 };
