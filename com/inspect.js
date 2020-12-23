@@ -1,5 +1,7 @@
 const settings = require('../settings.json')
 
+// https://github.com/discordjs/guide/blob/master/code-samples/sequelize/tags/sequelize.js
+
 // Avaira printing error response
 function areact(message) {
   message.react('🖤')
