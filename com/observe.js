@@ -11,7 +11,7 @@ exports.run = (client, message, params, perms) => {
       silver: 10,
       gold: 0,
     }).catch(e => {
-      console.log(e)
+      //console.log(e)
     })
   } catch (e) {
     if (e.name === 'SequelizeUniqueConstraintError') {
