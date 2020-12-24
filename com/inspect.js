@@ -19,11 +19,20 @@ function uMapBit(client, message) {
   //client.dbusers, client.map
   let thrownSilver = Math.round(message.PARAMS[2]),
   thrownGold = Math.round(message.PARAMS[3]),
+  owner_id = message.coorData.owner_id,
   costSilver = Math.round(message.coorData.silver),
   costGold = Math.round(message.coorData.gold);
   newSilver = Math.round(message.author.silver - thrownSilver)
   newGold = Math.round(message.author.gold - thrownGold)
   const affectUser = client.dbusers.update({ silver: newSilver, gold: newGold }, { where: { user_id: message.author.id } }).then(r => {
+    if (owner_id != 0) {
+      const affectOther = client.dbusers.findOne({ where: { user_id: owner_id } }).then(ao => {
+        var ns = Math.round(ao.silver + thrownSilver),
+        ng = Math.round(ao.gold + thrownGold);
+        const affectOther = client.dbusers.update({ silver: ns, gold: ng }, { where: {user_id: owner_id} }).catch(e => {console.log('E32')})
+      }).catch(e => {console.log('E33')})
+
+    }
     const affectMap = client.map.update({ owner_id: message.author.id, silver: thrownSilver, gold: thrownGold }, { where: { coordinate: message.ADDRESS } }).then(s => {
       console.log(`ADDRESS ${message.ADDRESS} SILVER ${costSilver} (for ${thrownSilver}/${message.author.silver}) GOLD ${costGold} (for ${thrownGold}/${message.author.gold})`)
       console.log(`=> PURCHASE ACCEPTED < QUERY ${(new Date()) - message.ActionTime.getTime()}ms > ${message.author.tag}`)
@@ -188,10 +197,10 @@ function gMap(client, message, params, perms){
       message.PARAMS = params
 
       // Spatial Array Limits Controller
-      var xmin = parseInt(xxx) - 2,
-      xmax = parseInt(xxx) + 3,
+      var xmin = parseInt(xxx) - 3,
+      xmax = parseInt(xxx) + 4,
       ymin = parseInt(yyy) - 2,
-      ymax = parseInt(yyy) + 3;
+      ymax = parseInt(yyy) + 3; // ymin=left,ymax=right
       if (xmin < 0) xmin = 0;
       if (xmax > 180) xmax = 180;
       if (ymin < 0) ymin = 0;
