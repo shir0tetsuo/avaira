@@ -48,7 +48,7 @@ function uMapBit(client, message) {
 }
 
 // Read Map Bit
-function rMapBit(client, message, workload) {
+async function rMapBit(client, message, workload) {
   // Initialization Controller
   if (!message.R) message.R = '';
   if (!message.shiftdelimiter) message.shiftdelimiter = '';
@@ -112,13 +112,15 @@ function rMapBit(client, message, workload) {
     // SELECTED NODE COLOR DATA
     if (message.coorData.owner_id == message.author.id) bonhomme = ':white_circle:', status = 'Owned'
     if (message.coorData.owner_id == 0) bonhomme = ':black_circle:'
+
     if (message.coorData.owner_id != 0 && message.coorData.owner_id != message.author.id) {
-      status = `Owner ${message.coorData.owner_id} `
-      if (message.coorData.silver < message.author.silver) bonhomme = ':yellow_circle:';
+      bonhomme = ':yellow_circle:';
+      let ownerdata = await client.users.fetch(message.coorData.owner_id)
+      status = `Owner ${message.coorData.owner_id} ${ownerdata}`
+
       if (message.coorData.silver > message.author.silver) bonhomme = ':purple_circle:';
-      if (message.coorData.gold < message.author.gold) bonhomme = ':yellow_circle:';
       if (message.coorData.gold > message.author.gold) bonhomme = ':brown_circle:';
-      if (message.coorData.gold < message.author.gold && message.coorData.silver < message.author.silver) bonhomme = ':orange_circle:';
+      if (message.coorData.gold > message.author.gold && message.coorData.silver > message.author.silver) bonhomme = ':orange_circle:';
     }
     // 0 = addr, 1 = command, 2 = silver, 3 = gold
     if (message.PARAMS[1] == 'buy') {
@@ -144,21 +146,48 @@ function rMapBit(client, message, workload) {
         return
       }
     } else {
-      message.R += `${bonhomme}\`${message.ADDRESS}\` ${status}`
-      message.R += `\`\`\`md\n`
-      message.R += `< SILVER ${message.coorData.silver}/${message.author.silver}(you) >`
-      message.R += ` < GOLD ${message.coorData.gold}/${message.author.gold}(you) >\n`
-      message.R += `< owner_id ${message.coorData.owner_id} > < QUERY ${(new Date()) - message.ActionTime.getTime()}ms >\n`
-      message.R += `> sov. since ${message.coorData.updatedAt} \n`
+      message.HUD = '';
+      message.HUD += `${bonhomme}\`${message.ADDRESS}\` ${status}`
+      message.HUD += `\`\`\`md\n`
+      message.HUD += `< SILVER ${message.coorData.silver}/${message.author.silver}(you) >`
+      message.HUD += ` < GOLD ${message.coorData.gold}/${message.author.gold}(you) >\n`
+      message.HUD += `< owner_id ${message.coorData.owner_id} > < QUERY ${(new Date()) - message.ActionTime.getTime()}ms >\n`
+      //message.HUD += `> sov. since ${message.coorData.updatedAt} \n`
       realLat = parseInt(message.ADDRESS.slice(0,3))-90
       realLon = parseInt(message.ADDRESS.slice(3,6))-180
-      message.R += `${message.ADDRESS.slice(0,3)}/179 ${message.ADDRESS.slice(3,6)}/359 <${realLat}.00/LAT> <${realLon}.00/LON> [${realLat}.00,${realLon}.00]`
-      message.R += `\`\`\``
+      message.HUD += `${message.ADDRESS.slice(0,3)}/179 ${message.ADDRESS.slice(3,6)}/359 <${realLat}.00/LAT> <${realLon}.00/LON> [${realLat}.00,${realLon}.00]`
+      message.HUD += `\`\`\``
       if (message.coorData.silver <= message.author.silver && message.coorData.gold <= message.author.gold) {
-        message.R += `You may purchase this node with \`${settings.prefix}in ${message.ADDRESS} buy [silver] [gold]\``
+        message.HUD += `You may purchase this node with \`${settings.prefix}in ${message.ADDRESS} buy [silver] [gold]\``
       }
+
+      //if () actualtag = client.users.fetch(id)
+      const EmbedObject = {
+        color: 0x59d7e8,
+        title: 'Node Properties Matrix',
+        author: {
+          name: 'Google Location',
+          icon_url: 'https://shadowsword.tk/img/google_icon_131222.png',
+          url: `https://www.google.com/maps/@${realLat}.0000000,${realLon}.0000000,8.0z`
+        },
+        description: `Location \`${message.ADDRESS}\` ${realLat},${realLon}`,
+        fields: [
+          {
+            name: `\u200b`,
+            value: `${message.R}`
+          },
+          {
+            name: `Displaying Query for`,
+            value: `${message.HUD}`
+          }
+        ],
+        footer: {
+          text: `sov. since ${message.coorData.updatedAt}`,
+          icon_url: 'https://shadowsword.tk/img/service_icon_avaira.png'
+        }
+      }
+      message.reply({embed: EmbedObject})
     }
-    message.reply(message.R)
     // Terminate and Print R, print bit data from bitdata
   }
 
@@ -197,8 +226,8 @@ function gMap(client, message, params, perms){
       message.PARAMS = params
 
       // Spatial Array Limits Controller
-      var xmin = parseInt(xxx) - 3,
-      xmax = parseInt(xxx) + 4,
+      var xmin = parseInt(xxx) - 4,
+      xmax = parseInt(xxx) + 5,
       ymin = parseInt(yyy) - 2,
       ymax = parseInt(yyy) + 3; // ymin=left,ymax=right
       if (xmin < 0) xmin = 0;
