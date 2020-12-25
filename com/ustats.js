@@ -6,7 +6,7 @@ const moment = require('moment')
 
 exports.run = (client, message, params, perms) => {
   guildMember = message.mentions.members.first();
-  if (!guildMember)
+  if (!guildMember) return;
   joinDiscord = moment(guildMember.user.createdAt).format('lll') + '\n*' + moment(new Date()).diff(guildMember.user.createdAt, 'days') + ' days ago*';
   joinServer = moment(guildMember.joinedAt).format('lll') + '\n*' + moment(new Date()).diff(guildMember.joinedAt, 'days') + ' days ago*';
 
@@ -17,7 +17,7 @@ exports.conf = {
   enabled: true,
   guildOnly: true,
   aliases: ['u','userstats'],
-  permLevel: 1
+  permLevel: 0
 };
 
 exports.help = {
