@@ -37,7 +37,7 @@ function uMapBit(client, message) {
       console.log(`ADDRESS ${message.ADDRESS} SILVER ${costSilver} (for ${thrownSilver}/${message.author.silver}) GOLD ${costGold} (for ${thrownGold}/${message.author.gold})`)
       console.log(`=> PURCHASE ACCEPTED < QUERY ${(new Date()) - message.ActionTime.getTime()}ms > ${message.author.tag}`)
       message.react('💚')
-      message.reply(`You purchased \`${message.ADDRESS}\` for ${thrownSilver} Silver & ${thrownGold} Gold!`)
+      message.reply(`You purchased \`${message.ADDRESS}\` for ${thrownSilver} <:silver:791893131518935061>, ${thrownGold} <:gold:791893120689111090>`)
       //return
     }).catch(e => {
       console.log(e)

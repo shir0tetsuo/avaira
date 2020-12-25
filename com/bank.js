@@ -26,10 +26,10 @@ exports.run = (client, message, params, perms) => {
       nslv = Math.round(parseInt(t.silver) + parseInt(params[1])),
       ngld = Math.round(parseInt(t.gold) + parseInt(params[2]));
       const affectOther = client.dbusers.update({ level: nlvl, silver: nslv, gold: ngld },{where: { user_id: member.id }}).then(ao => {
-        message.react('💚')
+        message.react('🟢')
         if (params[0] > 0) message.react('💖')
-        if (params[1] > 0) message.react('🤍')
-        if (params[2] > 0) message.react('🧡')
+        if (params[1] > 0) message.react('791893131518935061')
+        if (params[2] > 0) message.react('791893120689111090')
       })
     })
   }
