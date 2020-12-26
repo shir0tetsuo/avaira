@@ -2,7 +2,7 @@ const settings = require('../settings.json');
 const B = require('../sys/hyperbank.js')
 
 exports.run = async (client, message, params, perms) => {
-  B.bankSilver(client, message, 2, message.author.id)
+  B.bankGold(client, message, 2, message.author.id)
 };
 
 exports.conf = {
