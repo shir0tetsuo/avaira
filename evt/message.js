@@ -1,9 +1,10 @@
 const settings = require('../settings.json');
 const chalk = require('chalk')
+const B = require('../sys/hyperbank.js')
 
 let timeout = new Set();
 
-module.exports = message => {
+module.exports = async message => {
   // header information
   let ActionTime = new Date();
   let client = message.client;
@@ -34,61 +35,28 @@ module.exports = message => {
   // controller (init zero) -> user elev. -> .then(run)
 
   if (cmd){
-    // Calculate Owner Auth
+    // Calculate Owner Auth => User Sequence
     var authPerm = 0
     if (message.author.id == settings.owner) var authPerm = 4;
 
-    // Write New Entry
-    try {
-      const tag = client.dbusers.create({
-        user_id: message.author.id,
-        permission: authPerm,
-        level: 1,
-        silver: 10,
-        gold: 0,
-      }).catch(err=>{
-        // If Unique Exists
-        if (err.name === 'SequelizeUniqueConstraintError') {
-          console.log('WRITE FAILED (Exists)')
-        }
-      })
-      console.log(chalk.greenBright('WRITE',message.author.id))
-    }
-    // Unusual Error Handling
-    catch (e) {
-      console.log(e)
-      if (e.name === 'SequelizeUniqueConstraintError') {
-        console.log('Tag Exists')
-      } else {
-        console.log(chalk.redBright('Database Error 50'))
-        console.log(e)
-      }
-    }
+    // User Sequence
+    await B.initUser(client, message, message.author.id, authPerm)
+    user = await B.readUser(client, message.author.id)
 
-    // Find Permission and Execute
-    finally {
-      const tag = client.dbusers.findOne({ where: { user_id: message.author.id } }).then(t=>{
-        let perms = t.permission;
-        // returns
-        if (cmd.conf.guildOnly == true && message.channel.type === "dm") return;
-        if (cmd.conf.enabled == false) return;
-        if (perms < cmd.conf.permLevel) return;
-        // user awareness
-        message.react('❤️')
-        // avaira awareness
-        // random reaction
+    // Authority Intelligence
+    let perms = user.permission;
+    if (cmd.conf.guildOnly == true && message.channel.type === "dm") return;
+    if (cmd.conf.enabled == false) return;
+    if (perms < cmd.conf.permLevel) return;
 
-        // execution
-        //console.log(authPerm, perms, t.permission)
-        message.author.level = t.level;
-        message.author.silver = t.silver;
-        message.author.gold = t.gold;
-        cmd.run(client, message, params, perms);
-        //console.log('USER:',t.user_id,'PERM',t.permission,'LVL',t.level,'SLVR',t.silver,'GOLD',t.gold)
-      })
-    }
-    // close transit file
-    // depreciated
+    // Carrier Stats
+    message.author.level = user.level;
+    message.author.silver = user.silver;
+    message.author.gold = user.gold;
+    message.react('❤️')
+
+    // EXECUTE
+    cmd.run(client, message, params, perms);
   }
 
 

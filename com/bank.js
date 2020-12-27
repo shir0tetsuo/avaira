@@ -1,38 +1,14 @@
 const settings = require('../settings.json')
+const B = require('../sys/hyperbank.js')
 
-exports.run = (client, message, params, perms) => {
+exports.run = async (client, message, params, perms) => {
   let member = message.mentions.users.first()
   if (!message.mentions.users.first()) return message.react('🖤');
   if (isNaN(params[0]) || isNaN(params[1]) || isNaN(params[2])) return message.react('🖤');
-  try {
-    const tag = client.dbusers.create({
-      user_id: member.id,
-      permission: 0,
-      level: 1,
-      silver: 10,
-      gold: 0,
-    }).catch(e => {
-      //console.log(e)
-    })
-  } catch (e) {
-    if (e.name === 'SequelizeUniqueConstraintError') {
-      console.log('Tag Exists')
-    } else {
-      //console.log(e)
-    }
-  } finally {
-    const tag = client.dbusers.findOne({ where: { user_id: member.id } }).then(t => {
-      var nlvl = Math.round(parseInt(t.level) + parseInt(params[0])),
-      nslv = Math.round(parseInt(t.silver) + parseInt(params[1])),
-      ngld = Math.round(parseInt(t.gold) + parseInt(params[2]));
-      const affectOther = client.dbusers.update({ level: nlvl, silver: nslv, gold: ngld },{where: { user_id: member.id }}).then(ao => {
-        message.react('🟢')
-        if (params[0] > 0) message.react('💖')
-        if (params[1] > 0) message.react('791893131518935061')
-        if (params[2] > 0) message.react('791893120689111090')
-      })
-    })
-  }
+  user = await B.readUser(client, member.id);
+  B.bankLevel(client, message, params[0], member.id)
+  B.bankSilver(client, message, params[1], member.id)
+  B.bankGold(client, message, params[2], member.id)
 }
 
 exports.conf = {

@@ -1,6 +1,10 @@
 const chalk = require('chalk')
 const settings = require('../settings.json')
 
+//async function tagCall(client, user_id) {
+//  return tag = await client.dbusers.findOne({ where: {user_id: user_id}})
+//}
+
 // user = await B.readUser(client, message.author.id)
 exports.readUser = async (client, user_id) => {
   return tag = await client.dbusers.findOne({ where: {user_id: user_id}})
@@ -22,12 +26,12 @@ exports.bankSilver = async (client, message, v, user_id) => {
       //console.log(e)
     })
   } catch (e) {
-    if (e.name === 'SequelizeUniqueConstraintError') console.log(chalk.greenBright(`DOCUMENT EXIST ${user_id}`))
+    //if (e.name === 'SequelizeUniqueConstraintError') console.log(chalk.greenBright(`DOCUMENT EXIST ${user_id}`))
   } finally {
     const tag = client.dbusers.findOne({ where: { user_id: user_id } }).then(r => {
       value = Math.round(value + parseInt(r.silver)); // Calculator
       const affect = client.dbusers.update({silver: value},{where:{user_id: user_id}}).then(ao=>{
-        message.react('🟢')
+        message.react('⚪')
         let opString = `${r.silver}(+${v})=>${value}`
         console.log(chalk.blueBright(`OPERATION:`),`${(new Date()) - message.ActionTime.getTime()}ms :: ${opString}`,chalk.blueBright('SILVER'),user_id)
       })
@@ -51,12 +55,12 @@ exports.bankGold = async (client, message, v, user_id) => {
       //console.log(e)
     })
   } catch (e) {
-    if (e.name === 'SequelizeUniqueConstraintError') console.log(chalk.greenBright(`DOCUMENT EXIST ${user_id}`))
+    //if (e.name === 'SequelizeUniqueConstraintError') console.log(chalk.greenBright(`DOCUMENT EXIST ${user_id}`))
   } finally {
     const tag = client.dbusers.findOne({ where: { user_id: user_id } }).then(r => {
       value = Math.round(value + parseInt(r.gold)); // Calculator
       const affect = client.dbusers.update({gold: value},{where:{user_id: user_id}}).then(ao=>{
-        message.react('🟢')
+        message.react('🟠')
         let opString = `${r.gold}(+${v})=>${value}`
         console.log(chalk.blueBright(`OPERATION:`),`${(new Date()) - message.ActionTime.getTime()}ms :: ${opString}`,chalk.yellowBright('GOLD'),user_id)
       })
@@ -80,12 +84,12 @@ exports.bankLevel = async (client, message, v, user_id) => {
       //console.log(e)
     })
   } catch (e) {
-    if (e.name === 'SequelizeUniqueConstraintError') console.log(chalk.greenBright(`DOCUMENT EXIST ${user_id}`))
+    //if (e.name === 'SequelizeUniqueConstraintError') console.log(chalk.greenBright(`DOCUMENT EXIST ${user_id}`))
   } finally {
     const tag = client.dbusers.findOne({ where: { user_id: user_id } }).then(r => {
       value = Math.round(value + parseInt(r.level)); // Calculator
       const affect = client.dbusers.update({level: value},{where:{user_id: user_id}}).then(ao=>{
-        message.react('🟢')
+        message.react('💖')
         let opString = `${r.level}(+${v})=>${value}`
         console.log(chalk.blueBright(`OPERATION:`),`${(new Date()) - message.ActionTime.getTime()}ms :: ${opString}`,chalk.yellowBright('LEVEL'),user_id)
       })
@@ -114,7 +118,7 @@ exports.elevateAuthority = async (client, message, v, user_id, perms) => {
       //console.log(e)
     })
   } catch (e) {
-    if (e.name === 'SequelizeUniqueConstraintError') console.log(chalk.greenBright(`DOCUMENT EXIST ${user_id}`))
+    //if (e.name === 'SequelizeUniqueConstraintError') console.log(chalk.greenBright(`DOCUMENT EXIST ${user_id}`))
   } finally {
     const tag = client.dbusers.findOne({ where: { user_id: user_id } }).then(r => {
       value = Math.round(value + parseInt(r.permission));
@@ -125,5 +129,28 @@ exports.elevateAuthority = async (client, message, v, user_id, perms) => {
         console.log(chalk.blueBright(`OPERATION:`),`${(new Date()) - message.ActionTime.getTime()}ms :: ${opString}`,chalk.redBright('AUTH'),user_id)
       })
     })
+  }
+}
+
+exports.initUser = async (client, message, user_id, perms) => {
+  if (!perms) perms = 0, console.log(chalk.redBright('NEW ENTRY Permission 0'));
+  try {
+    const tag = client.dbusers.create({
+      user_id: user_id,
+      permission: perms,
+      level: 1,
+      silver: 10,
+      gold: 0,
+    }).catch(err =>{
+      if (err.name === 'SequelizeUniqueConstraintError') {
+        //message.react('🟩')
+      } else {
+        message.react('🟥')
+      }
+    })
+  } catch(e) {
+
+  } finally {
+    message.react('🟩')
   }
 }
