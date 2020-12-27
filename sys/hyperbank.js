@@ -5,6 +5,11 @@ const settings = require('../settings.json')
 //  return tag = await client.dbusers.findOne({ where: {user_id: user_id}})
 //}
 
+let defLvl = 1,
+defPerm = 0,
+defSilver = 10,
+defGold = 0;
+
 // user = await B.readUser(client, message.author.id)
 exports.readUser = async (client, user_id) => {
   return tag = await client.dbusers.findOne({ where: {user_id: user_id}})
@@ -17,11 +22,11 @@ exports.bankSilver = async (client, message, v, user_id) => {
   var value = Math.round(parseInt(v));
   try {
     const tag = client.dbusers.create({
-      user_id: member.id,
-      permission: 0,
-      level: 1,
-      silver: 10,
-      gold: 0,
+      user_id: user_id,
+      permission: defPerm,
+      level: defLvl,
+      silver: defSilver,
+      gold: defGold,
     }).catch(e => {
       //console.log(e)
     })
@@ -31,7 +36,7 @@ exports.bankSilver = async (client, message, v, user_id) => {
     const tag = client.dbusers.findOne({ where: { user_id: user_id } }).then(r => {
       value = Math.round(value + parseInt(r.silver)); // Calculator
       const affect = client.dbusers.update({silver: value},{where:{user_id: user_id}}).then(ao=>{
-        message.react('⚪')
+        if (v >= 1) message.react('⚪')
         let opString = `${r.silver}(+${v})=>${value}`
         console.log(chalk.blueBright(`OPERATION:`),`${(new Date()) - message.ActionTime.getTime()}ms :: ${opString}`,chalk.blueBright('SILVER'),user_id)
       })
@@ -46,11 +51,11 @@ exports.bankGold = async (client, message, v, user_id) => {
   var value = Math.round(parseInt(v));
   try {
     const tag = client.dbusers.create({
-      user_id: member.id,
-      permission: 0,
-      level: 1,
-      silver: 10,
-      gold: 0,
+      user_id: user_id,
+      permission: defPerm,
+      level: defLvl,
+      silver: defSilver,
+      gold: defGold,
     }).catch(e => {
       //console.log(e)
     })
@@ -60,7 +65,7 @@ exports.bankGold = async (client, message, v, user_id) => {
     const tag = client.dbusers.findOne({ where: { user_id: user_id } }).then(r => {
       value = Math.round(value + parseInt(r.gold)); // Calculator
       const affect = client.dbusers.update({gold: value},{where:{user_id: user_id}}).then(ao=>{
-        message.react('🟠')
+        if (v >= 1) message.react('🟠')
         let opString = `${r.gold}(+${v})=>${value}`
         console.log(chalk.blueBright(`OPERATION:`),`${(new Date()) - message.ActionTime.getTime()}ms :: ${opString}`,chalk.yellowBright('GOLD'),user_id)
       })
@@ -75,11 +80,11 @@ exports.bankLevel = async (client, message, v, user_id) => {
   var value = Math.round(parseInt(v));
   try {
     const tag = client.dbusers.create({
-      user_id: member.id,
-      permission: 0,
-      level: 1,
-      silver: 10,
-      gold: 0,
+      user_id: user_id,
+      permission: defPerm,
+      level: defLvl,
+      silver: defSilver,
+      gold: defGold,
     }).catch(e => {
       //console.log(e)
     })
@@ -89,7 +94,7 @@ exports.bankLevel = async (client, message, v, user_id) => {
     const tag = client.dbusers.findOne({ where: { user_id: user_id } }).then(r => {
       value = Math.round(value + parseInt(r.level)); // Calculator
       const affect = client.dbusers.update({level: value},{where:{user_id: user_id}}).then(ao=>{
-        message.react('💖')
+        if (v >= 1) message.react('💖')
         let opString = `${r.level}(+${v})=>${value}`
         console.log(chalk.blueBright(`OPERATION:`),`${(new Date()) - message.ActionTime.getTime()}ms :: ${opString}`,chalk.yellowBright('LEVEL'),user_id)
       })
@@ -109,11 +114,11 @@ exports.elevateAuthority = async (client, message, v, user_id, perms) => {
 
   try {
     const tag = client.dbusers.create({
-      user_id: member.id,
-      permission: 0,
-      level: 1,
-      silver: 10,
-      gold: 0,
+      user_id: user_id,
+      permission: defPerm,
+      level: defLvl,
+      silver: defSilver,
+      gold: defGold,
     }).catch(e => {
       //console.log(e)
     })
@@ -138,9 +143,9 @@ exports.initUser = async (client, message, user_id, perms) => {
     const tag = client.dbusers.create({
       user_id: user_id,
       permission: perms,
-      level: 1,
-      silver: 10,
-      gold: 0,
+      level: defLvl,
+      silver: defSilver,
+      gold: defGold,
     }).catch(err =>{
       if (err.name === 'SequelizeUniqueConstraintError') {
         //message.react('🟩')

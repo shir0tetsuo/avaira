@@ -1,5 +1,6 @@
 exports.run = (client, message, params, perms) => {
   var R = '\n';
+  R += `:green_square: Database OK\n`
   R += `:new_moon: Selected\n`
   R += `:black_circle: Empty Node\n`
   R += `:white_circle: Owned Node\n`
