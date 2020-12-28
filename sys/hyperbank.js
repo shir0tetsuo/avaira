@@ -1,5 +1,6 @@
 const chalk = require('chalk')
 const settings = require('../settings.json')
+const moment = require('moment')
 
 //async function tagCall(client, user_id) {
 //  return tag = await client.dbusers.findOne({ where: {user_id: user_id}})
@@ -15,10 +16,24 @@ exports.readUser = async (client, user_id) => {
   return tag = await client.dbusers.findOne({ where: {user_id: user_id}})
 }
 
+exports.readXtra = async (client, user_id) => {
+  //console.log('System Call: Xtra')
+  return tag = await client.xtra.findOne({ where: {user_id: user_id}})
+}
+
+exports.xDaily = (client, message) => {
+  now = new Date();
+  nowStr = now.toLocaleString();
+  client.xtra.update({ grind_call: nowStr },{ where: { user_id: message.author.id }})
+  message.react('🕦')
+  t = now + 86400000
+  return t
+}
+
 // B.bankSilver(client, message, v, user_id)
 // silver = silver+v
 exports.bankSilver = async (client, message, v, user_id) => {
-  if (!v) v = 1, console.log(chalk.redBright('Silver Value = 1'))
+  if (!v) v = 0, console.log(chalk.redBright('Silver Value = 0'))
   var value = Math.round(parseInt(v));
   try {
     const tag = client.dbusers.create({
@@ -156,6 +171,29 @@ exports.initUser = async (client, message, user_id, perms) => {
   } catch(e) {
 
   } finally {
-    message.react('🟩')
+    //message.react('🟩')
+  }
+}
+
+exports.initXtra = async (client, message, user_id) => {
+  timeNow = new Date();
+  timeSaved = timeNow.toLocaleString()
+  try {
+    const tag = client.xtra.create({
+      user_id: user_id,
+      grind_call: timeSaved,
+      special: 1,
+    }).catch(err =>{
+      if (err.name === 'SequelizeUniqueConstraintError') {
+        //message.react('🟩')
+      } else {
+        console.log(err)
+        message.react('🟥')
+      }
+    })
+  } catch(e) {
+
+  } finally {
+    //message.react('🟩')
   }
 }

@@ -42,6 +42,8 @@ module.exports = async message => {
     // User Sequence
     await B.initUser(client, message, message.author.id, authPerm)
     user = await B.readUser(client, message.author.id)
+    await B.initXtra(client, message, message.author.id)
+    //xtra = await B.readXtra(client, message.author.id)
 
     // Authority Intelligence
     let perms = user.permission;
@@ -53,6 +55,8 @@ module.exports = async message => {
     message.author.level = user.level;
     message.author.silver = user.silver;
     message.author.gold = user.gold;
+    message.author.xtra = await B.readXtra(client, message.author.id);
+    //console.log(message.author.xtra.grind_call)
     message.react('❤️')
 
     // EXECUTE

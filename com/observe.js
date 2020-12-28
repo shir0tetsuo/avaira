@@ -21,7 +21,7 @@ exports.run = (client, message, params, perms) => {
     }
   } finally {
     const tag = client.dbusers.findOne({ where: { user_id: member.id } }).then(t => {
-      message.author.send(`\`user_id ${t.user_id}\` AUTH**\`${t.permission}\`** S\`${t.silver}\` G\`${t.gold}\``)
+      message.author.send(`\`user_id ${t.user_id}\` LEVEL \`${t.level}\` AUTH**\`${t.permission}\`** S\`${t.silver}\` G\`${t.gold}\``)
     })
   }
 }

@@ -69,8 +69,22 @@ const M = sequelize.define('mapdata', {
   },
 })
 
+const EXTRA = sequelize.define('xtra', {
+  user_id: {
+    type: Sequelize.STRING,
+    unique: true,
+  },
+  grind_call: Sequelize.STRING,
+  special: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+    allowNull: false,
+  }
+})
+
 client.map = M;
 client.dbusers = Users;
+client.xtra = EXTRA;
 //client.db.plots = Plots;
 
 require('./sys/events.js')(client); // ** sys/eventLoader

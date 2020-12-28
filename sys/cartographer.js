@@ -7,6 +7,11 @@ async function uBitData(client, message, tS, tG) {
   message.react('💚')
 }
 
+exports.xBitEditor = async (client, message, params) => {
+  await client.map.update({ owner_id: params[1], silver: params[2], gold: params[3] },{ where: { coordinate: params[0] }})
+  message.react('💚')
+}
+
 async function returnWorkload(client, message) {
   if (!message.PARAMS) return console.log('Workload Error')
 }
