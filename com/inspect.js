@@ -222,9 +222,6 @@ function gMap(client, message, params, perms){
     let yyy = params[0].slice(3,6)
     if (xxx >= 0 && xxx < 180 && yyy >= 0 && yyy < 360) {
 
-      // Set params[0] as address
-      message.ADDRESS = params[0]
-      message.PARAMS = params
 
       // Spatial Array Limits Controller
       var xmin = parseInt(xxx) - 4,
@@ -279,13 +276,15 @@ function gMap(client, message, params, perms){
 }
 
 exports.run = (client, message, params, perms) => {
+  message.ADDRESS = params[0]
+  message.PARAMS = params
   gMap(client, message, params, perms)
 }
 
 exports.conf = {
-  enabled: true,
+  enabled: false,
   guildOnly: false,
-  aliases: ['in'],
+  aliases: ['ins'],
   permLevel: 0
 };
 

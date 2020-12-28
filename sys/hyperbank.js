@@ -47,7 +47,7 @@ exports.bankSilver = async (client, message, v, user_id) => {
 // B.bankGold(client, message, v, user_id)
 // gold = gold+v
 exports.bankGold = async (client, message, v, user_id) => {
-  if (!v) v = 1, console.log(chalk.redBright('Gold Value = 1'))
+  if (!v) v = 0, console.log(chalk.redBright('Gold Value = 0'))
   var value = Math.round(parseInt(v));
   try {
     const tag = client.dbusers.create({
@@ -138,7 +138,7 @@ exports.elevateAuthority = async (client, message, v, user_id, perms) => {
 }
 
 exports.initUser = async (client, message, user_id, perms) => {
-  if (!perms) perms = 0, console.log(chalk.redBright('NEW ENTRY Permission 0'));
+  if (!perms) perms = 0;
   try {
     const tag = client.dbusers.create({
       user_id: user_id,
