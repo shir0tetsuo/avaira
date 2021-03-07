@@ -21,8 +21,12 @@ module.exports = async message => {
   // Update Message Sequence
   lvluplist = ['Yay! You went up a level.', 'Level Up!']
   const levelCalculated = Math.floor(0.5 * Math.sqrt(user.mrecord));
+  const levelRewardGold = Math.floor(user.mrecord / 9);
+  const levelRewardSilver = 10;
   if (levelCalculated > user.level) {
     await B.bankLevel(client, message, 1, message.author.id)
+    await B.bankGold(client, message, levelRewardGold, message.author.id)
+    await B.bankSilver(client, message, levelRewardSilver, message.author.id)
     let replym = rand(lvluplist)
     message.reply(`${replym} \`(${Math.floor(user.level + 1)})\``)
   }
