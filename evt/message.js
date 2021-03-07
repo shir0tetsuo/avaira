@@ -1,6 +1,7 @@
 const settings = require('../settings.json');
 const chalk = require('chalk')
 const B = require('../sys/hyperbank.js')
+const rand = require('../sys/rand.js')
 
 let timeout = new Set();
 
@@ -13,6 +14,22 @@ module.exports = async message => {
   // filters
   if (message.author.bot) return; // no bots
   if (message === null) return; // no nulls
+
+  //
+  await B.uMRecord(client, message)
+  user = await B.readUser(client, message.author.id)
+  // Update Message Sequence
+  lvluplist = ['Yay! You went up a level.', 'Level Up!']
+  const levelCalculated = Math.floor(0.5 * Math.sqrt(user.mrecord));
+  if (levelCalculated > user.level) {
+    await B.bankLevel(client, message, 1, message.author.id)
+    let replym = rand(lvluplist)
+    message.reply(`${replym} \`(${Math.floor(user.level + 1)})\``)
+  }
+  //console.log(levelCalculated, message.author.id, user.level, user.mrecord)
+  //
+
+
   if (!message.content.toLowerCase().startsWith(settings.prefix)) return;
 
   // 2 sec timeout
@@ -41,8 +58,10 @@ module.exports = async message => {
 
     // User Sequence
     await B.initUser(client, message, message.author.id, authPerm)
-    user = await B.readUser(client, message.author.id)
+    if (!user) user = await B.readUser(client, message.author.id)
     await B.initXtra(client, message, message.author.id)
+    // update message record
+
     //xtra = await B.readXtra(client, message.author.id)
 
     // Authority Intelligence
@@ -55,8 +74,16 @@ module.exports = async message => {
     message.author.level = user.level;
     message.author.silver = user.silver;
     message.author.gold = user.gold;
+    // might not need this but oh well
+    message.author.mrecord = user.mrecord;
+    //console.log(user.mrecord)
     message.author.xtra = await B.readXtra(client, message.author.id);
     //console.log(message.author.xtra.grind_call)
+
+
+
+
+
     message.react('❤️')
 
     // EXECUTE

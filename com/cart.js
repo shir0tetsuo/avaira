@@ -38,7 +38,7 @@ async function printUI(client, message) {
   message.HUD += `\`\`\``
 
   if (message.author.level >= UBIT.level && message.author.silver >= message.mdata.silver && message.author.gold >= message.mdata.gold) {
-    message.HUD += `You may purchase this node with \`${settings.prefix}in buy ${message.ADDRESS} ${message.mdata.silver} ${message.mdata.gold}\``
+    message.HUD += `You may purchase this node with \`${settings.prefix}in ${message.ADDRESS} buy ${message.mdata.silver} ${message.mdata.gold}\``
   }
 
   const EmbedObject = {

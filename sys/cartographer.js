@@ -29,6 +29,9 @@ exports.getColor = async (client, message, BIT, UBIT) => {
     if (BIT.silver > message.author.silver && BIT.gold > message.author.gold) result = ':orange_circle:'
     if (UBIT.permission > 2) result = ':nazar_amulet:'
     if (BIT.owner_id == message.author.id) result = ':coin:'
+    if (BIT.identity == '1') result = ':city_sunset:'
+    if (BIT.identity == '2') result = ':cityscape:'
+    if (BIT.identity == '51') result = ':alien:'
   }
   if (BIT.coordinate == message.ADDRESS && !message.STOP) result = ':new_moon:'
   return result

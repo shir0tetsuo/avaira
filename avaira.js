@@ -47,6 +47,11 @@ const Users = sequelize.define('users', {
     defaultValue: 0,
     allowNull: false,
   },
+  mrecord: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+    allowNull: false,
+  }
 });
 
 const M = sequelize.define('mapdata', {
@@ -65,6 +70,11 @@ const M = sequelize.define('mapdata', {
   gold: {
     type: Sequelize.INTEGER,
     defaultValue: 0,
+    allowNull: false,
+  },
+  identity: {
+    type: Sequelize.STRING,
+    defaultValue: '0',
     allowNull: false,
   },
 })

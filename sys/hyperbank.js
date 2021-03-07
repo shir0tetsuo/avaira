@@ -42,6 +42,7 @@ exports.bankSilver = async (client, message, v, user_id) => {
       level: defLvl,
       silver: defSilver,
       gold: defGold,
+      mrecord: 1,
     }).catch(e => {
       //console.log(e)
     })
@@ -59,6 +60,31 @@ exports.bankSilver = async (client, message, v, user_id) => {
   }
 }
 
+exports.uMRecord = async (client, message) => {
+  var value = 1;
+  try {
+    const tag = client.dbusers.create({
+      user_id: message.author.id,
+      permission: defPerm,
+      level: defLvl,
+      silver: defSilver,
+      gold: defGold,
+      mrecord: 1,
+    }).catch(e => {
+      //console.log(e)
+    })
+  } catch (e) {
+    //if (e.name === 'SequelizeUniqueConstraintError') console.log(chalk.greenBright(`DOCUMENT EXIST ${user_id}`))
+  } finally {
+    const tag = client.dbusers.findOne({ where: { user_id: message.author.id } }).then(r => {
+      value = Math.round(value + parseInt(r.mrecord)); // Calculator
+      const affect = client.dbusers.update({mrecord: value},{where:{user_id: message.author.id}}).then(ao=>{
+        //console.log('OK mrecord',message.author.id)
+      })
+    })
+  }
+}
+
 // B.bankGold(client, message, v, user_id)
 // gold = gold+v
 exports.bankGold = async (client, message, v, user_id) => {
@@ -71,6 +97,7 @@ exports.bankGold = async (client, message, v, user_id) => {
       level: defLvl,
       silver: defSilver,
       gold: defGold,
+      mrecord: 1,
     }).catch(e => {
       //console.log(e)
     })
@@ -100,6 +127,7 @@ exports.bankLevel = async (client, message, v, user_id) => {
       level: defLvl,
       silver: defSilver,
       gold: defGold,
+      mrecord: 1,
     }).catch(e => {
       //console.log(e)
     })
@@ -134,6 +162,7 @@ exports.elevateAuthority = async (client, message, v, user_id, perms) => {
       level: defLvl,
       silver: defSilver,
       gold: defGold,
+      mrecord: 1,
     }).catch(e => {
       //console.log(e)
     })
@@ -161,6 +190,7 @@ exports.initUser = async (client, message, user_id, perms) => {
       level: defLvl,
       silver: defSilver,
       gold: defGold,
+      mrecord: 1,
     }).catch(err =>{
       if (err.name === 'SequelizeUniqueConstraintError') {
         //message.react('🟩')
