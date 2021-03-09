@@ -77,6 +77,11 @@ const M = sequelize.define('mapdata', {
     defaultValue: '0',
     allowNull: false,
   },
+  description: {
+    type: Sequelize.STRING,
+    defaultValue: '0',
+    allowNull: false,
+  },
 })
 
 const EXTRA = sequelize.define('xtra', {

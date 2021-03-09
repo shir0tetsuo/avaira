@@ -24,23 +24,77 @@ async function printUI(client, message) {
   } else {
     owner = await dummy()
   }
-  if (message.mdata.owner_id != message.author.id) status = `Owner ${owner} (Lv${message.UBIT.level}/AUTH${message.UBIT.permission})`
+  if (message.mdata.owner_id != message.author.id) status = `Owner ${owner} (Lv${message.UBIT.level}/AUTH${message.UBIT.permission})\n`
   if (message.mdata.owner_id == 0) status = 'Empty Node'
   if (message.mdata.owner_id == message.author.id) status = 'Owned'
 
+  // based on identity
+  if (message.mdata.identity == '1') status += ' [CITY]'
+  if (message.mdata.identity == '2') status += ' [COLLESEUM]'
+  if (message.mdata.identity == '3') status += ' [COLLESEUM]'
+  if (message.mdata.identity == '4') status += ' [COLLESEUM]'
+  if (message.mdata.identity == '5') status += ' [COLLESEUM]'
+  if (message.mdata.identity == '6') status += ' [DEFENSE CONSTRUCT]'
+  if (message.mdata.identity == '7') status += ' [RAILGUN]'
+  if (message.mdata.identity == '8') status += ' [Nithya II]'
+  if (message.mdata.identity == '9') status += ' [Dark Realm]'
+  if (message.mdata.identity == '10') status += ' [Ari\'s Realm]'
+  if (message.mdata.identity == '11') status += ' [Ari\'s Realm]'
+  if (message.mdata.identity == '12') status += ' [Ari\'s Realm]'
+  if (message.mdata.identity == '13') status += ' [ASTRAL GATE]'
+  if (message.mdata.identity == '51') status += ' [GOV. FACILITY]'
+  // based on coordinate
+  if (message.mdata.coordinate == '127105') status += ' Northern Capital'
+  if (message.mdata.coordinate == '128105') status += ' Pumpkin Area'
+  if (message.mdata.coordinate == '132104') status += ' Nithya IV Sparring Construct'
+  if (message.mdata.coordinate == '132108') status += ' Cel\'s Area'
+  if (message.mdata.coordinate == '135104') status += ' D-03'
+  if (message.mdata.coordinate == '134105') status += ' D-04'
+  if (message.mdata.coordinate == '136105') status += ' Shrine'
+  if (message.mdata.coordinate == '135106') status += ' D-05'
+  if (message.mdata.coordinate == '136106') status += ' R-001'
+  if (message.mdata.coordinate == '137106') status += ' Oshiko Nogitsune Palace'
+  if (message.mdata.coordinate == '138106') status += ' Ginko\'s Bar'
+  if (message.mdata.coordinate == '130105') status += ' Healing Center (Yam)'
+  // add ID
+  if (message.mdata.coordinate != '0') status += `\`(${message.mdata.identity})\``
+
   message.HUD = '';
   message.HUD += `${message.nodeColor} ${status}\n`
-  message.HUD += `\`\`\`md\n`
-  message.HUD += `< SILVER ${message.mdata.silver}/${message.author.silver}(you) >`
-  message.HUD += ` < GOLD ${message.mdata.gold}/${message.author.gold}(you) >\n`
-  message.HUD += `< owner_id ${message.mdata.owner_id} > < QUERY ${(new Date()) - message.ActionTime.getTime()}ms >\n`
-  message.HUD += `< LEVEL ${UBIT.level}/${message.author.level}(you) > ${xxx}/179 ${yyy}/359 <${realLat}.00/LAT> <${realLon}.00/LON> [${realLat}.00,${realLon}.00]\n`
-  message.HUD += `\`\`\``
+  //message.HUD += `\`\`\`md\n`
+  message.HUD += `\n:euro: SILVER \`${message.mdata.silver} (/${message.author.silver})\` `
+  message.HUD += `:yen: GOLD \`${message.mdata.gold} (/${message.author.gold})\`\n`
+  message.HUD += `:sparkles: LEVEL ${UBIT.level} (You: Lv. ${message.author.level}) `
+  message.HUD += `**:regional_indicator_x: ${xxx}/179 :regional_indicator_y: ${yyy}/359**\n`
+  message.HUD += `:globe_with_meridians: <${realLat}.00/LAT> <${realLon}.00/LON> **\`(${realLat}.00,${realLon}.00)\`**\n`
+  message.HUD += `\`\`\`< owner_id ${message.mdata.owner_id} > < QUERY ${(new Date()) - message.ActionTime.getTime()}ms >\`\`\``
+  //message.HUD += `\`\`\``
+  if (message.mdata.description != '0') {
+    message.HUD += `\`\`\`${message.mdata.description}\`\`\``
+  }
 
   if (message.author.level >= UBIT.level && message.author.silver >= message.mdata.silver && message.author.gold >= message.mdata.gold) {
     message.HUD += `You may purchase this node with \`${settings.prefix}in ${message.ADDRESS} buy ${message.mdata.silver} ${message.mdata.gold}\``
   }
 
+
+  var identobject = ''
+  if (message.mdata.identity == '1') identobject = 'https://shadowsword.tk/img/avaira/1_city.gif'
+  if (message.mdata.identity == '2') identobject = 'https://shadowsword.tk/img/avaira/2_nIV.gif'
+  if (message.mdata.identity == '3') identobject = 'https://shadowsword.tk/img/avaira/3_spar.gif'
+  if (message.mdata.identity == '4') identobject = 'https://shadowsword.tk/img/avaira/4_spar.gif'
+  if (message.mdata.identity == '5') identobject = 'https://shadowsword.tk/img/avaira/5_spar.gif'
+  if (message.mdata.identity == '6') identobject = 'https://shadowsword.tk/img/avaira/6_defconstruct.gif'
+  if (message.mdata.identity == '7') identobject = 'https://shadowsword.tk/img/avaira/7_railgun.gif'
+  if (message.mdata.identity == '8') identobject = 'https://shadowsword.tk/img/avaira/8_nithya.gif'
+  if (message.mdata.identity == '9') identobject = 'https://shadowsword.tk/img/avaira/9_dark.gif'
+  if (message.mdata.identity == '10') identobject = 'https://shadowsword.tk/img/avaira/10_arirealm.gif'
+  if (message.mdata.identity == '11') identobject = 'https://shadowsword.tk/img/avaira/11_arigate.gif'
+  if (message.mdata.identity == '12') identobject = 'https://shadowsword.tk/img/avaira/11_arigate.gif'
+  if (message.mdata.identity == '13') identobject = 'https://shadowsword.tk/img/avaira/13_astragate.gif'
+
+
+  console.log(identobject)
   const EmbedObject = {
     color: 0x59d7e8,
     title: 'Node Properties Matrix',
@@ -48,6 +102,9 @@ async function printUI(client, message) {
       name: 'Google Location',
       icon_url: 'https://shadowsword.tk/img/google_icon_131222.png',
       url: `https://www.google.com/maps/@${realLat}.0000000,${realLon}.0000000,8.0z`
+    },
+    image: {
+      url: `${identobject}`
     },
     description: `Location \`${message.ADDRESS}\` ${realLat},${realLon}`,
     fields: [
@@ -235,6 +292,6 @@ exports.conf = {
 
 exports.help = {
   name: 'cartographer',
-  description: 'Updated Inspect Utility.',
+  description: 'View matrix nodes.',
   usage: 'in [(0-179)/(0-359)], in [(0-179)/(0-359)] buy [silver] [gold]'
 };

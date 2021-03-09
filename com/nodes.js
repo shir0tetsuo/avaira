@@ -12,7 +12,7 @@ exports.run = async (client, message, params, perms) => {
   if (!isNaN(params[0])) {
     let SliceA = (params[0] - 1) * 10;
     var SliceB = params[0] * 10;
-    const tagString = tagList.map(t => `\`${t.coordinate}\`, ${t.silver} Silver, ${t.gold} Gold`).slice(SliceA,SliceB).join('\n')
+    const tagString = tagList.map(t => `\`${t.coordinate}\`, ${t.silver} Silver, ${t.gold} Gold, desc.(${t.description})`).slice(SliceA,SliceB).join('\n')
     var Reply = '';
     Reply += `\n**__Nodes__**\n`
     if (SliceB > Properties) SliceB = Properties
@@ -25,7 +25,7 @@ exports.run = async (client, message, params, perms) => {
     }
     message.reply(Reply)
   } else {
-    const tagString = tagList.map(t => `\`${t.coordinate}\`, ${t.silver} Silver, ${t.gold} Gold`).slice(0,10).join('\n')
+    const tagString = tagList.map(t => `\`${t.coordinate}\`, ${t.silver} Silver, ${t.gold} Gold, desc.(${t.description})`).slice(0,10).join('\n')
     var Reply = '';
     Reply += `\n**__Nodes__**\n`
     Reply += `${tagString}\nNodes: ${Properties}`

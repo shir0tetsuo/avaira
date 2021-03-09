@@ -19,16 +19,20 @@ module.exports = async message => {
   await B.uMRecord(client, message)
   user = await B.readUser(client, message.author.id)
   // Update Message Sequence
-  lvluplist = ['Yay! You went up a level.', 'Level Up!']
-  const levelCalculated = Math.floor(0.5 * Math.sqrt(user.mrecord));
-  const levelRewardGold = Math.floor(user.mrecord / 9);
-  const levelRewardSilver = 10;
+  lvluplist = ['Yay! You went up a level.', 'Level Up!', 'Your level changed!', '+1 Level!']
+  const levelCalculated = Math.floor(0.4 * Math.sqrt(user.mrecord));
+  const levelRewardGold = Math.floor(user.mrecord / 12);
+  const levelRewardSilver = 10 + Math.floor(user.mrecord / 10) + levelCalculated;
   if (levelCalculated > user.level) {
     await B.bankLevel(client, message, 1, message.author.id)
     await B.bankGold(client, message, levelRewardGold, message.author.id)
     await B.bankSilver(client, message, levelRewardSilver, message.author.id)
     let replym = rand(lvluplist)
-    message.reply(`${replym} \`(${Math.floor(user.level + 1)})\``)
+    message.reply(`${replym} \`(${Math.floor(user.level + 1)})\``).then(m => {
+      setTimeout(() => {
+        m.delete()
+      }, 5000)
+    })
   }
   //console.log(levelCalculated, message.author.id, user.level, user.mrecord)
   //

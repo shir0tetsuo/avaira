@@ -7,7 +7,7 @@ exports.run = async (client, message, params, perms) => {
 }
 
 exports.conf = {
-  enabled: true,
+  enabled: false,
   guildOnly: true,
   aliases: ['rm','mod','regmap'],
   permLevel: 4

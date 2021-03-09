@@ -18,3 +18,4 @@ npm install --save sqlite3
 npm install --save chalk
 npm install --save sequelize
 npm install --save moment
+npm install --save canvas

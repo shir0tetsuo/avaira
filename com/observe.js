@@ -36,6 +36,6 @@ exports.conf = {
 
 exports.help = {
   name: 'observe',
-  description: 'Display information about a user',
+  description: 'Display LEVEL, SILVER, GOLD, AUTH, MREC information about a user',
   usage: 'o [mention]'
 };

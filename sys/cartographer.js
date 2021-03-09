@@ -12,6 +12,14 @@ exports.xBitEditor = async (client, message, params) => {
   message.react('💚')
 }
 
+exports.szt = async(client, address, id) => {
+  node = await client.map.findOne({ where: {coordinate: address}}).then(m => {
+    client.map.update({identity: id},{where:{coordinate: address}}).then(r => {
+      console.log('ID CHANGE SUCCESS',address,id)
+    })
+  })
+}
+
 async function returnWorkload(client, message) {
   if (!message.PARAMS) return console.log('Workload Error')
 }
@@ -23,14 +31,26 @@ exports.getColor = async (client, message, BIT, UBIT) => {
   } else if (UBIT && BIT) {
     result = ':white_circle:'
     //if (BIT.gold > 1) result = ':green_circle:'
-    if (UBIT.level > message.author.level) result = ':blue_circle:'
     if (BIT.silver > message.author.silver) result = ':purple_circle:'
     if (BIT.gold > message.author.gold) result = ':brown_circle:'
     if (BIT.silver > message.author.silver && BIT.gold > message.author.gold) result = ':orange_circle:'
-    if (UBIT.permission > 2) result = ':nazar_amulet:'
+    if (UBIT.level > message.author.level) result = ':blue_circle:'
+    if (UBIT.permission == 2) result = ':nazar_amulet:'
+    if (UBIT.permission >= 3) result = ':ringed_planet:'
     if (BIT.owner_id == message.author.id) result = ':coin:'
     if (BIT.identity == '1') result = ':city_sunset:'
-    if (BIT.identity == '2') result = ':cityscape:'
+    if (BIT.identity == '2') result = ':stadium:'
+    if (BIT.identity == '3') result = ':stadium:'
+    if (BIT.identity == '4') result = ':stadium:'
+    if (BIT.identity == '5') result = ':stadium:'
+    if (BIT.identity == '6') result = ':shield:'
+    if (BIT.identity == '7') result = ':radioactive:'
+    if (BIT.identity == '8') result = ':shinto_shrine:'
+    if (BIT.identity == '9') result = ':milky_way:'
+    if (BIT.identity == '10') result = ':stadium:'
+    if (BIT.identity == '11') result = ':amphora:'
+    if (BIT.identity == '12') result = ':sunrise:'
+    if (BIT.identity == '13') result = ':shinto_shrine:'
     if (BIT.identity == '51') result = ':alien:'
   }
   if (BIT.coordinate == message.ADDRESS && !message.STOP) result = ':new_moon:'
@@ -47,6 +67,8 @@ exports.GMapBit = async (client, addr) => {
       owner_id: 0,
       silver: 1,
       gold: 0,
+      identity: '0',
+      description: '0',
     }).catch(err=>{
       if (err.name === 'SequelizeUniqueConstraintError') {
         console.log('SAVE',addr,'EXISTS')

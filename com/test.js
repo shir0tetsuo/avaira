@@ -9,7 +9,7 @@ exports.run = async (client, message, params, perms) => {
 };
 
 exports.conf = {
-  enabled: true,
+  enabled: false,
   guildOnly: false,
   aliases: ['tst'],
   permLevel: 4
