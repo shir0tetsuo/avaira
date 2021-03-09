@@ -35,27 +35,19 @@ async function printUI(client, message) {
   if (message.mdata.identity == '4') status += ' [COLLESEUM]'
   if (message.mdata.identity == '5') status += ' [COLLESEUM]'
   if (message.mdata.identity == '6') status += ' [DEFENSE CONSTRUCT]'
-  if (message.mdata.identity == '7') status += ' [RAILGUN]'
+  if (message.mdata.identity == '7') status += ' [HI.EN. CONSTRUCT]'
   if (message.mdata.identity == '8') status += ' [Nithya II]'
   if (message.mdata.identity == '9') status += ' [Dark Realm]'
   if (message.mdata.identity == '10') status += ' [Ari\'s Realm]'
   if (message.mdata.identity == '11') status += ' [Ari\'s Realm]'
   if (message.mdata.identity == '12') status += ' [Ari\'s Realm]'
   if (message.mdata.identity == '13') status += ' [ASTRAL GATE]'
+  if (message.mdata.identity == '14') status += ' [Light Realm]'
+  if (message.mdata.identity == '15') status += ' [CONSTRUCT]'
+  if (message.mdata.identity == '16') status += ' [UNKNOWN]'
   if (message.mdata.identity == '51') status += ' [GOV. FACILITY]'
   // based on coordinate
-  if (message.mdata.coordinate == '127105') status += ' Northern Capital'
-  if (message.mdata.coordinate == '128105') status += ' Pumpkin Area'
-  if (message.mdata.coordinate == '132104') status += ' Nithya IV Sparring Construct'
-  if (message.mdata.coordinate == '132108') status += ' Cel\'s Area'
-  if (message.mdata.coordinate == '135104') status += ' D-03'
-  if (message.mdata.coordinate == '134105') status += ' D-04'
-  if (message.mdata.coordinate == '136105') status += ' Shrine'
-  if (message.mdata.coordinate == '135106') status += ' D-05'
-  if (message.mdata.coordinate == '136106') status += ' R-001'
-  if (message.mdata.coordinate == '137106') status += ' Oshiko Nogitsune Palace'
-  if (message.mdata.coordinate == '138106') status += ' Ginko\'s Bar'
-  if (message.mdata.coordinate == '130105') status += ' Healing Center (Yam)'
+
   // add ID
   if (message.mdata.coordinate != '0') status += `\`(${message.mdata.identity})\``
 
@@ -69,8 +61,9 @@ async function printUI(client, message) {
   message.HUD += `:globe_with_meridians: <${realLat}.00/LAT> <${realLon}.00/LON> **\`(${realLat}.00,${realLon}.00)\`**\n`
   message.HUD += `\`\`\`< owner_id ${message.mdata.owner_id} > < QUERY ${(new Date()) - message.ActionTime.getTime()}ms >\`\`\``
   //message.HUD += `\`\`\``
+  var capHUD = '(None)'
   if (message.mdata.description != '0') {
-    message.HUD += `\`\`\`${message.mdata.description}\`\`\``
+    capHUD = `\`\`\`${message.mdata.description}\`\`\``
   }
 
   if (message.author.level >= UBIT.level && message.author.silver >= message.mdata.silver && message.author.gold >= message.mdata.gold) {
@@ -92,14 +85,17 @@ async function printUI(client, message) {
   if (message.mdata.identity == '11') identobject = 'https://shadowsword.tk/img/avaira/11_arigate.gif'
   if (message.mdata.identity == '12') identobject = 'https://shadowsword.tk/img/avaira/11_arigate.gif'
   if (message.mdata.identity == '13') identobject = 'https://shadowsword.tk/img/avaira/13_astragate.gif'
+  if (message.mdata.identity == '14') identobject = 'https://shadowsword.tk/img/avaira/14_lightgate.gif'
+  if (message.mdata.identity == '15') identobject = 'https://shadowsword.tk/img/avaira/15_construct.gif'
+  if (message.mdata.identity == '16') identobject = 'https://shadowsword.tk/img/avaira/16_wormhole.gif'
 
 
   console.log(identobject)
   const EmbedObject = {
     color: 0x59d7e8,
-    title: 'Node Properties Matrix',
+    title: 'Realm Node',
     author: {
-      name: 'Google Location',
+      name: 'Google Physical Location',
       icon_url: 'https://shadowsword.tk/img/google_icon_131222.png',
       url: `https://www.google.com/maps/@${realLat}.0000000,${realLon}.0000000,8.0z`
     },
@@ -113,9 +109,13 @@ async function printUI(client, message) {
         value: `${message.R}`
       },
       {
-        name: `Displaying Query for`,
+        name: `QUERY`,
         value: `${message.HUD}`
-      }
+      },
+      {
+        name: `DESCRIPTION`,
+        value: `${capHUD}`
+      },
     ],
     footer: {
       text: `sov. since ${message.mdata.updatedAt}`,

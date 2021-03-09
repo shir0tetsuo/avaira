@@ -15,7 +15,9 @@ module.exports = async message => {
   if (message.author.bot) return; // no bots
   if (message === null) return; // no nulls
 
-  //
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //// UMRecord
   await B.uMRecord(client, message)
   user = await B.readUser(client, message.author.id)
   // Update Message Sequence
@@ -35,7 +37,7 @@ module.exports = async message => {
     })
   }
   //console.log(levelCalculated, message.author.id, user.level, user.mrecord)
-  //
+  //////////////////////////////////////////////////////////////////////////////
 
 
   if (!message.content.toLowerCase().startsWith(settings.prefix)) return;
@@ -67,6 +69,10 @@ module.exports = async message => {
     // User Sequence
     await B.initUser(client, message, message.author.id, authPerm)
     if (!user) user = await B.readUser(client, message.author.id)
+
+
+
+
     await B.initXtra(client, message, message.author.id)
     // update message record
 
@@ -74,6 +80,15 @@ module.exports = async message => {
 
     // Authority Intelligence
     let perms = user.permission;
+
+    // set auth 1 if over lv 5
+    if (user.level >= 5 && perms < 1) {
+      await B.elevateAuthority(client, message, 1, message.author.id, perms)
+      perms = 1
+      message.reply(`you are now authorized to use \`AUTH1\` commands \`see ..help\``)
+    }
+
+
     if (cmd.conf.guildOnly == true && message.channel.type === "dm") return;
     if (cmd.conf.enabled == false) return;
     if (perms < cmd.conf.permLevel) return;
@@ -82,12 +97,12 @@ module.exports = async message => {
     message.author.level = user.level;
     message.author.silver = user.silver;
     message.author.gold = user.gold;
+    message.author.authority = user.permission
     // might not need this but oh well
     message.author.mrecord = user.mrecord;
     //console.log(user.mrecord)
     message.author.xtra = await B.readXtra(client, message.author.id);
     //console.log(message.author.xtra.grind_call)
-
 
 
 

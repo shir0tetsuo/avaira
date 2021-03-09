@@ -20,6 +20,14 @@ exports.szt = async(client, address, id) => {
   })
 }
 
+exports.changeDesc = async(client, address, data) => {
+  node = await client.map.findOne({ where: {coordinate: address}}).then(m => {
+    client.map.update({description: data},{where:{coordinate: address}}).then(r => {
+      console.log('DATA CHANGE SUCCESS',address,data)
+    })
+  })
+}
+
 async function returnWorkload(client, message) {
   if (!message.PARAMS) return console.log('Workload Error')
 }
@@ -38,19 +46,22 @@ exports.getColor = async (client, message, BIT, UBIT) => {
     if (UBIT.permission == 2) result = ':nazar_amulet:'
     if (UBIT.permission >= 3) result = ':ringed_planet:'
     if (BIT.owner_id == message.author.id) result = ':coin:'
-    if (BIT.identity == '1') result = ':city_sunset:'
-    if (BIT.identity == '2') result = ':stadium:'
-    if (BIT.identity == '3') result = ':stadium:'
-    if (BIT.identity == '4') result = ':stadium:'
-    if (BIT.identity == '5') result = ':stadium:'
-    if (BIT.identity == '6') result = ':shield:'
-    if (BIT.identity == '7') result = ':radioactive:'
-    if (BIT.identity == '8') result = ':shinto_shrine:'
-    if (BIT.identity == '9') result = ':milky_way:'
-    if (BIT.identity == '10') result = ':stadium:'
-    if (BIT.identity == '11') result = ':amphora:'
-    if (BIT.identity == '12') result = ':sunrise:'
-    if (BIT.identity == '13') result = ':shinto_shrine:'
+    if (BIT.identity == '1') result = ':city_sunset:' // CITY
+    if (BIT.identity == '2') result = ':stadium:' // ARENA
+    if (BIT.identity == '3') result = ':stadium:' // ARENA
+    if (BIT.identity == '4') result = ':stadium:' // ARENA
+    if (BIT.identity == '5') result = ':stadium:' // ARENA
+    if (BIT.identity == '6') result = ':shield:' // DEF.C.
+    if (BIT.identity == '7') result = ':radioactive:' // H.E.C.
+    if (BIT.identity == '8') result = ':shinto_shrine:' // NITHYA
+    if (BIT.identity == '9') result = ':milky_way:' // DARK REALM
+    if (BIT.identity == '10') result = ':stadium:' // Ari's Stadium
+    if (BIT.identity == '11') result = ':amphora:' // Ari's
+    if (BIT.identity == '12') result = ':sunrise:' // Ari's
+    if (BIT.identity == '13') result = ':park:' // NEUTRAL gate
+    if (BIT.identity == '14') result = ':foggy:' // LIGHT gate
+    if (BIT.identity == '15') result = ':gear:' // CONSTRUCT
+    if (BIT.identity == '16') result = ':knot:' // WORMHOLE
     if (BIT.identity == '51') result = ':alien:'
   }
   if (BIT.coordinate == message.ADDRESS && !message.STOP) result = ':new_moon:'
