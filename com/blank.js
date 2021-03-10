@@ -1,6 +1,6 @@
 const settings = require('../settings.json');
 
-exports.run = (client, message, params, perms) => {
+exports.run = async (client, message, params, perms) => {
 
 };
 
