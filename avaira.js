@@ -84,6 +84,33 @@ const M = sequelize.define('mapdata', {
   },
 })
 
+const P = sequelize.define('pocket', {
+  address: {
+    type: Sequelize.STRING,
+    unique: true,
+  },
+  owner_id: {
+    type: Sequelize.STRING,
+    defaultValue: '0',
+    allowNull: false,
+  },
+  flag: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
+  },
+  identity: {
+    type: Sequelize.STRING,
+    defaultValue: '0',
+    allowNull: false,
+  },
+  description: {
+    type: Sequelize.STRING,
+    defaultValue: '0',
+    allowNull: false,
+  },
+})
+
 const EXTRA = sequelize.define('xtra', {
   user_id: {
     type: Sequelize.STRING,
@@ -97,6 +124,7 @@ const EXTRA = sequelize.define('xtra', {
   }
 })
 
+client.pocket = P;
 client.map = M;
 client.dbusers = Users;
 client.xtra = EXTRA;
