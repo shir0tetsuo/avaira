@@ -51,6 +51,22 @@ const Users = sequelize.define('users', {
     type: Sequelize.INTEGER,
     defaultValue: 0,
     allowNull: false,
+  },
+  portalemail: {
+    type: Sequelize.STRING,
+    defaultValue: 0,
+    allowNull: false,
+    unique: true,
+  },
+  portalhash: {
+    type: Sequelize.STRING,
+    defaultValue: 0,
+    allowNull: false,
+  },
+  portalban: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
   }
 });
 
@@ -139,7 +155,7 @@ client.login(settings.token);
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 fs.readdir('./com/', (err, files) => { // ** main
-  if (err) console.err(err);
+  if (err) console.log(err);
   console.log(`${files.length} Plugins Found in ./com/`)
   files.forEach(f => {
     let fileread = require(`./com/${f}`);
